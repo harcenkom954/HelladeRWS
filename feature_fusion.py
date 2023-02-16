@@ -27,7 +27,6 @@ class iAFF(nn.Module):
 
     def __init__(self, channels=64, r=4, type="2D"):
         super(iAFF, self).__init__()
-        inter_channels = int(channels // r)
 
         if type == "1D":
             # 本地注意力
@@ -40,7 +39,6 @@ class iAFF(nn.Module):
             )
 
             # 全局注意力
-            self.global_att = nn.Sequential(
                 nn.AdaptiveAvgPool1d(1),
                 nn.Conv1d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
                 nn.BatchNorm1d(inter_channels),
@@ -61,7 +59,6 @@ class iAFF(nn.Module):
             self.global_att2 = nn.Sequential(
                 nn.AdaptiveAvgPool1d(1),
                 nn.Conv1d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
-                nn.BatchNorm1d(inter_channels),
                 nn.ReLU(inplace=True),
                 nn.Conv1d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
                 nn.BatchNorm1d(channels),
@@ -166,7 +163,6 @@ class AFF(nn.Module):
             self.global_att = nn.Sequential(
                 nn.AdaptiveAvgPool2d(1),
                 nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
-                nn.BatchNorm2d(inter_channels),
                 nn.ReLU(inplace=True),
                 nn.Conv2d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
                 nn.BatchNorm2d(channels),
